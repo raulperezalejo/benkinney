@@ -17,3 +17,16 @@
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>
+
+<% @post.comments.order(created_at: :asc).each do |comment| %>
+    <%= comment.body%>
+    <%= comment.user.first_name%> <%= comment.user.last_name%>
+<%end%>
+
+Add a new comment
+<%= form_for([@post, @post.comments.build]) do |f| %>
+      <%= f.label :body %><br>
+      <%= f.text_area :body %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+      <%= f.submit %>
+<% end %>
