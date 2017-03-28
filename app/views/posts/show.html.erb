@@ -1,32 +1,61 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @post.title %>
-</p>
+<div class="row">
 
-<p>
-  <strong>Body:</strong>
-  <%= @post.body %>
-</p>
+<div class="col-xs-12">
 
-<p>
-  <strong>User:</strong>
-  <%= @post.user.first_name %> <%= @post.user.last_name %>
-</p>
+    <h2><%= @post.title %></h2>
+    <p>
+      <%= @post.created_at%> by
+      <%= link_to "/user_post/#{@post.user_id}" do %>
+        <%=@post.user.first_name %> <%= @post.user.last_name %>
+      <%end%>
+    </p>
 
-<%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %>
+    <hr/>
 
-<% @post.comments.order(created_at: :asc).each do |comment| %>
-    <%= comment.body%>
-    <%= comment.user.first_name%> <%= comment.user.last_name%>
-<%end%>
+    <p>
+      <%= @post.body %>
+    </p>
 
-Add a new comment
-<%= form_for([@post, @post.comments.build]) do |f| %>
-      <%= f.label :body %><br>
-      <%= f.text_area :body %>
-      <%= f.hidden_field :user_id, value: current_user.id %>
-      <%= f.submit %>
-<% end %>
+    <%= link_to 'Edit', edit_post_path(@post) %> |
+    <%= link_to 'Back', posts_path %>
+
+</div>
+
+<div class="col-xs-12">
+<h3>Comments: </h3>
+  <% @post.comments.order(created_at: :asc).each do |comment| %>
+    <div class="panel panel-default col">
+      <p><%= comment.body%></p>
+      Commented by: <%= comment.user.first_name%> <%= comment.user.last_name%>
+    </div>
+  <%end%>
+
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    Add new Comment
+  </button>
+
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add a New Comment</h4>
+      </div>
+      <%= form_for([@post, @post.comments.build]) do |f| %>
+        <div class="modal-body">
+          <%= f.text_area :body %>
+        </div>
+        <%= f.hidden_field :user_id, value: current_user.id %>
+        <div class="modal-footer">
+          <%= f.submit class:"btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+</div>
