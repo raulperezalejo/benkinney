@@ -3,14 +3,14 @@ Rails.application.routes.draw do
   root 'posts#index'
 
   resources :posts do
-    resources :comments
+    post '/comments' => 'comments#create'
   end
 
   devise_for :users
 
   post '/login' => 'devise/sessions#create'
 
-  get 'user_post/:id' => 'users#index'
+  get 'user_post/:id' => 'users#user_post', as: :user_post
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

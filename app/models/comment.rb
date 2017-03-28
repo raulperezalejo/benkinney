@@ -1,8 +1,11 @@
 class Comment < ActiveRecord::Base
+
+  default_scope { order(created_at: :asc) }
+
   belongs_to :post
   belongs_to :user
 
-  #validation
+  #Validators
   validates_presence_of :body, :post, :user
 
 end
